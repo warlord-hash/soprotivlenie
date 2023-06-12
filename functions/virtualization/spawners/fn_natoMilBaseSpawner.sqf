@@ -50,18 +50,10 @@ if !(_vicInit) then
 	for [{ _i = 0 }, { _i < _vicCount }, { _i = _i + 1 }] do
 	{
 		private _spawnSpot = _vicSpawnSpots select _i-1;
-		if (_worth < 1000) then
-		{
-			// only harmless vics
-			private _vic = [_spawnSpot, SE_NATO_HarmlessVics select (floor (random count SE_NATO_HarmlessVics))];
-			_vicGarrison pushBack _vic;
-		} else
-		{
-			// TODO: make harmful vics be only for higher aggression so player doesnt get access to them too early
-			private _combined = (SE_NATO_HarmlessVics + [SE_NATO_MRAP_HMG]);
-			private _vic = [_spawnSpot, _combined select (floor (random count _combined))];
-			_vicGarrison pushBack _vic;
-		};
+		private _pool = [false] call SE_fnc_getAvailableVehiclePool;
+
+		private _vic = [_spawnSpot, _pool select (floor (random count _pool))];
+		_vicGarrison pushBack _vic;
 	};
 
 	spawners setVariable [format["veh_%1", _name], _vicGarrison, true];
