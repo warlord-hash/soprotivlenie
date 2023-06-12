@@ -31,7 +31,7 @@ SE_SpawnDistance = 1250;
 server setVariable ["SE_knownBases", [], true];
 server setVariable ["SE_knownAirbases", [], true];
 
-aiCommander setVariable ["SE_commanderAggression", 0, true];
+aiCommander setVariable ["aggression", 0, true];
 
 SE_baseMarkers = [];
 
@@ -69,6 +69,7 @@ SE_baseMarkers = [];
 	spawners setVariable [format["staticspots_%1", _name], _staticSpawnSpots, true];
 } foreach(SE_baseData);
 
+// TODO: place game loop in another file
 [] spawn {
 	while {true} do
 	{

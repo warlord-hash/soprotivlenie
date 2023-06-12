@@ -22,7 +22,11 @@ SE_NATO_JetPilot = "O_Pilot_F";
 SE_NATO_InfantryTruck = "B_Truck_01_transport_F";
 SE_NATO_FuelTruck = "B_Truck_01_fuel_F";
 SE_NATO_MRAPUnarmed = "B_MRAP_01_F";
-SE_NATO_MRAPhmg = "B_MRAP_01_hmg_F";
+SE_NATO_MRAP_HMG = "B_MRAP_01_hmg_F";
+SE_NATO_MRAP_GMG = "B_MRAP_01_hmg_F";
+SE_NATO_NamerAPC = "B_APC_Tracked_01_rcws_F";
+SE_NATO_MerkavaTankNoHMG = "B_MBT_01_cannon_F";
+SE_NATO_TrackedAA = "B_APC_Tracked_01_AA_F";
 
 /*
 *
@@ -52,5 +56,4 @@ SE_NATO_GarrLevelOne = [SE_NATO_SquadLead, SE_NATO_Rifleman, SE_NATO_Rifleman, S
 SE_NATO_GarrLevelTwo = [];
 
 SE_NATO_HarmlessVics = [SE_NATO_InfantryTruck, SE_NATO_FuelTruck, SE_NATO_MRAPUnarmed];
-SE_NATO_GunVics = [SE_NATO_MRAPhmg];
 SE_NATO_Statics = [SE_NATO_StaticHMG, SE_NATO_StaticGMG];

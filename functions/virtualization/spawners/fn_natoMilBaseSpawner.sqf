@@ -18,14 +18,19 @@ if (_worth <= 600) then
 	_vicCount = 1;
 };
 
+if (_worth <= 800) then
+{
+	_vicCount = 2;
+};
+
 if (_worth <= 1000) then
 {
-	_vicCount = random [1,2,4];
+	_vicCount = 3;
 };
 
 if (_worth >= 1100) then
 {
-	_vicCount = random [2,3,6];
+	_vicCount = 5;
 };
 
 {
@@ -42,7 +47,7 @@ if !(_vicInit) then
 		_vicCount = count _vicSpawnSpots;
 	};
 
-	for [{ _i = 1 }, { _i < _vicCount }, { _i = _i + 1 }] do
+	for [{ _i = 0 }, { _i < _vicCount }, { _i = _i + 1 }] do
 	{
 		private _spawnSpot = _vicSpawnSpots select _i-1;
 		if (_worth < 1000) then
@@ -52,7 +57,8 @@ if !(_vicInit) then
 			_vicGarrison pushBack _vic;
 		} else
 		{
-			private _combined = (SE_NATO_HarmlessVics + SE_NATO_GunVics);
+			// TODO: make harmful vics be only for higher aggression so player doesnt get access to them too early
+			private _combined = (SE_NATO_HarmlessVics + [SE_NATO_MRAP_HMG]);
 			private _vic = [_spawnSpot, _combined select (floor (random count _combined))];
 			_vicGarrison pushBack _vic;
 		};

@@ -58,5 +58,11 @@ class CfgFunctions
             file="\soprot\functions\eh";
             class addUnitEventHandlers {};
         };
+
+        class AICommander
+        {
+            file="\soprot\functions\ai\commander";
+            class getAvailableVehiclePool {};
+        };
     };
 };
