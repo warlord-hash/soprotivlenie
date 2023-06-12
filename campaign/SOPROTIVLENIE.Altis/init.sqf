@@ -1,0 +1,1 @@
+[] call SE_fnc_initVar;
