@@ -8,7 +8,6 @@ I'm fairly new to SQF, so I try to learn from existing source code (ie Vindicta 
 Currently only features basic base functionality, as well as ambient vehicles and gendarmerie spawns. Nothing much as of yet.
 
 # Using
-- OOP-Light by Sparker95
 - SQFLint
 
 # Thanks to
