@@ -1,3 +1,2 @@
-// [] call SE_fnc_initVar;
-// [] call SE_fnc_gameLoop;
-
+[] call SE_fnc_initVar;
+[] call SE_fnc_gameLoop;
