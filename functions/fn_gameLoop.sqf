@@ -21,39 +21,41 @@ if(!isServer) exitWith {};
 				};
 			} else
 			{
-				private _groupEntry = (spawners getVariable [format["group_%1", _name], []]);
+				private _groups = (spawners getVariable [format["group_%1", _name], []]);
 				private _spawned = (spawners getVariable [format["nato_%1", _name], []]);
 
-				if (typeName _groupEntry == "GROUP") then
+				if (count _groups > 0) then
 				{
-					if (count units _groupEntry != 0) then
 					{
-						private _garr = [];
-						private _vicGarrison = [];
-
+						if (count units _x != 0) then
 						{
-							_garr pushBack (typeOf _x);
-							deleteVehicle _x;
-						} foreach(units _groupEntry);
+							private _garr = [];
+							private _vicGarrison = [];
 
-						{
-							if (alive _x && !(_x isKindOf "Man")) then
 							{
-								_vicGarrison pushBack [[getPos _x, getDir _x], (typeOf _x)];
-							};
+								_garr pushBack (typeOf _x);
+								deleteVehicle _x;
+							} foreach(units _x);
 
-							deleteVehicle _x;
-						} foreach(_spawned);
+							{
+								if (alive _x && !(_x isKindOf "Man")) then
+								{
+									_vicGarrison pushBack [[getPos _x, getDir _x], (typeOf _x)];
+								};
 
-						spawners setVariable [format["group_%1", _name], nil, false];
-						spawners setVariable [format["garrison_%1", _name], _garr, true];
-						spawners setVariable [format["veh_%1", _name], _vicGarrison, true];
-						spawners setVariable [format["nato_%1", _name], [], true];
-					} else
-					{
-						spawners setVariable [format["group_%1", _name], nil, false];
-						spawners setVariable [format["garrison_%1", _name], [], true];
-					};
+								deleteVehicle _x;
+							} foreach(_spawned);
+
+							spawners setVariable [format["group_%1", _name], [], false];
+							spawners setVariable [format["garrison_%1", _name], _garr, true];
+							spawners setVariable [format["veh_%1", _name], _vicGarrison, true];
+							spawners setVariable [format["nato_%1", _name], [], true];
+						} else
+						{
+							spawners setVariable [format["group_%1", _name], [], false];
+							spawners setVariable [format["garrison_%1", _name], [], true];
+						};
+					} foreach _groups;
 				}
 			};
 
@@ -147,39 +149,41 @@ if(!isServer) exitWith {};
 				};
 			};
 
+			[] call SE_fnc_commanderLoop;
 
-			private _owner = townData getVariable [format["owner_%1", _name], west];
-			private _reinforced = aiCommander getVariable [format["reinforced_%1", _name], false];
-			if (_owner != west) then
-			{
-				if !(_reinforced) then
-				{
-					// send reinforcements from closest garrison
-					{
-						_x params ["_basePos", "_baseName", "_worth"];
 
-						_result = [_baseName, _basePos, _name, _pos] call SE_fnc_reinforceTown;
-						if (_result) then
-						{
-							break;
-						};
-					} foreach(SE_baseData);
-				} else
-				{
-					if !([_pos] call SE_fnc_inSpawnDistance) then
-					{
-						private _reinforcements = aiCommander getVariable format["reinforcements_%1", _name];
-						if (count units _reinforcements != 0) then
-						{
-							private _flag = townData getVariable format["flag_%1", _name];
-							townData setVariable [format["owner_%1", _name], west, true];
+			// private _owner = townData getVariable [format["owner_%1", _name], west];
+			// private _reinforced = aiCommander getVariable [format["reinforced_%1", _name], false];
+			// if (_owner != west) then
+			// {
+			// 	if !(_reinforced) then
+			// 	{
+			// 		// send reinforcements from closest garrison
+			// 		{
+			// 			_x params ["_basePos", "_baseName", "_worth"];
 
-							_flag removeAction 0;
-							_flag addAction ["Take Town", "events\takeTownControl.sqf", nil, 1, true, false];
-						}
-					};
-				};
-			};
+			// 			_result = [_baseName, _basePos, _name, _pos] call SE_fnc_reinforceTown;
+			// 			if (_result) then
+			// 			{
+			// 				break;
+			// 			};
+			// 		} foreach(SE_baseData);
+			// 	} else
+			// 	{
+			// 		if !([_pos] call SE_fnc_inSpawnDistance) then
+			// 		{
+			// 			private _reinforcements = aiCommander getVariable format["reinforcements_%1", _name];
+			// 			if (count units _reinforcements != 0) then
+			// 			{
+			// 				private _flag = townData getVariable format["flag_%1", _name];
+			// 				townData setVariable [format["owner_%1", _name], west, true];
+
+			// 				_flag removeAction 0;
+			// 				_flag addAction ["Take Town", "events\takeTownControl.sqf", nil, 1, true, false];
+			// 			}
+			// 		};
+			// 	};
+			// };
 
 		} foreach(SE_townData);
 	};

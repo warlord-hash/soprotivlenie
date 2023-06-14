@@ -10,8 +10,15 @@ private _spawner = spawners getVariable [_spawnerName, []];
 private _staticSpawnSpots = spawners getVariable [format["staticspots_%1", _name], []];
 private _vicSpawnSpots = spawners getVariable [format["vicspots_%1", _name], []];
 private _group = createGroup west;
+private _groups = [];
 
 {
+	if((count units _group) == floor((count _garrison) / 2)) then
+	{
+		_groups pushBack _group;
+		_group = createGroup west;
+	};
+
 	private _unitSP = _group createUnit [_x, _pos, [], 50, "NONE"];
 	[_unitSP, "mil_losses", false] call SE_fnc_addUnitEventHandlers;
 
@@ -57,4 +64,4 @@ private _group = createGroup west;
 
 
 spawners setVariable [_spawnerName, _spawner, true];
-spawners setVariable [format["group_%1", _name], _group, true];
+spawners setVariable [format["group_%1", _name], _groups, true];

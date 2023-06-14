@@ -1,7 +1,7 @@
 // 1250-0
 // TODO: readjust worth
 SE_baseData = [
-	[[15181.992, 17335.799], "NATO Neochori Base", 1250], // done
+	[[15181.992, 17335.799], "NATO Neochori Base", 650], // done
 	[[6826.774, 16059.807], "Kore Outpost", 700],
 	[[9963.856, 19355.158], "Galati Base", 900],
 	[[12816.547, 16693.211], "Neochori Base", 1000], // done

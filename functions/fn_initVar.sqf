@@ -9,6 +9,8 @@ call compile preprocessFileLineNumbers "data\towns.sqf";
 call compile preprocessFileLineNumbers "data\airbases.sqf";
 call compile preprocessFileLineNumbers "data\military.sqf";
 
+SE_baseData = SE_baseData + SE_airbaseData;
+
 server = [true] call CBA_fnc_createNamespace;
 publicVariable "server";
 spawners = [true] call CBA_fnc_createNamespace;
@@ -33,7 +35,6 @@ SE_SpawnDistance = 1250;
 */
 
 server setVariable ["SE_knownBases", [], true];
-server setVariable ["SE_knownAirbases", [], true];
 
 aiCommander setVariable ["aggression", 0, true];
 
@@ -130,7 +131,11 @@ MISSION_ROOT = call {
 		_garrison = _garrison + SE_NATO_GarrLevelOne; // add more groups
 	};
 
+	private _totalInf = aiCommander getVariable ["total_inf", 0];
+	_totalInf = _totalInf + (count _garrison);
+
 	spawners setVariable [format["garrison_%1", _name], _garrison, true];
+	aiCommander setVariable ["total_inf", _totalInf, true];
 
 	// setup vic garrison
 	private _vicCount = 0;

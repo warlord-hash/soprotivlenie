@@ -9,6 +9,9 @@ if (_owner == west) then
 	removeAllActions _target;
 	_target addAction ["Surrender Town", "events\takeTownControl.sqf", nil, 1, true, false];
 	_target forceFlagTexture SE_Player_FlagTexture;
+
+	private _controlledTerr = aiCommander getVariable ["uncontrolled_terr", 0];
+	aiCommander setVariable ["uncontrolled_terr", (_controlledTerr + 1), true];
 	
 	[_name] call SE_fnc_updateTownMarker;
 } else
@@ -18,6 +21,9 @@ if (_owner == west) then
 	removeAllActions _target;
 	_target addAction ["Take Town", "events\takeTownControl.sqf", nil, 1, true, false];
 	_target forceFlagTexture SE_NATO_FlagTexture;
+
+	private _controlledTerr = aiCommander getVariable ["uncontrolled_terr", 0];
+	aiCommander setVariable ["uncontrolled_terr", (_controlledTerr - 1), true];
 
 	[_name] call SE_fnc_updateTownMarker;
 };
