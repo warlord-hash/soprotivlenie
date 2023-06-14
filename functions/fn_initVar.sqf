@@ -15,10 +15,14 @@ spawners = [true] call CBA_fnc_createNamespace;
 publicVariable "spawners";
 townData = [true] call CBA_fnc_createNamespace;
 publicVariable "townData";
+baseData = [true] call CBA_fnc_createNamespace;
+publicVariable "baseData";
 aiCommander = [true] call CBA_fnc_createNamespace;
 publicVariable "aiCommander";
 
 SE_NATO_ConfigEntry = "BLU_F";
+SE_NATO_FlagTexture = "\A3\Data_F\Flags\flag_NATO_CO.paa";
+SE_Player_FlagTexture = "\A3\Data_F\Flags\flag_FIA_CO.paa";
 SE_SpawnDistance = 1250;
 
 
@@ -35,6 +39,13 @@ aiCommander setVariable ["aggression", 0, true];
 
 SE_baseMarkers = [];
 
+MISSION_ROOT = call {
+    private "_arr";
+    _arr = toArray __FILE__;
+    _arr resize (count _arr - 8);
+    toString _arr
+};
+
 [] call SE_fnc_initNato;
 [] call SE_fnc_initGendarm;
 [] call SE_fnc_initCiv;
@@ -42,12 +53,50 @@ SE_baseMarkers = [];
 
 {
 	_x params["_pos", "_name"];
+
+
+	_owner = townData getVariable ["owner_%1", west];
 	_marker = createMarker [_name, _pos];
-	_marker setMarkerType "SE_Town";
+	_marker setMarkerType "loc_LetterT";
+
+	if (_owner == west) then
+	{
+		_marker setMarkerColor "colorBLUFOR";
+	} else
+	{
+		_marker setMarkerColor "colorIndependent";
+	};
+
+	private _flag = "Flag_NATO_F" createVehicle _pos;
+	_flag addAction ["Take Town", "events\takeTownControl.sqf", nil, 1, true, false];
+	_flag setVariable ["name", _name, true];
+
+	private _pop = townData getVariable [format["pop_%1", _name], 0];
+
+	if (_name in SE_highPopulationTowns) then
+	{
+		_pop = floor (random [1000, 2500, 5000]);
+	};
+
+	if (_name in SE_midPopulationTowns) then
+	{
+		_pop = floor (random [250, 500, 1000]);
+	};
+
+	if (_pop == 0) then
+	{
+		_pop = floor (random [25, 125, 250]);
+	};
+
+	townData setVariable [format["flag_%1", _name], _flag];
+	townData setVariable [format["marker_%1", _name], _marker, true];
+	townData setVariable [format["pop_%1", _name], _pop, true];
 } foreach(SE_townData);
 
 {
 	_x params["_pos", "_name", "_worth"];
+
+	// setup spawn spots
 	private _vicSpawnSpots = [];
 	private _staticSpawnSpots = [];
 
@@ -55,7 +104,7 @@ SE_baseMarkers = [];
 	{
 		if ((typeOf _x) == SE_NATO_InfantryTruck) then
 		{
-			_vicSpawnSpots pushBack (getPos _x);
+			_vicSpawnSpots pushBack [getPos _x, getDir _x];
 			deleteVehicle _x;
 		};
 
@@ -67,113 +116,67 @@ SE_baseMarkers = [];
 
 	spawners setVariable [format["vicspots_%1", _name], _vicSpawnSpots, true];
 	spawners setVariable [format["staticspots_%1", _name], _staticSpawnSpots, true];
-} foreach(SE_baseData);
 
-// TODO: place game loop in another file
-[] spawn {
-	while {true} do
+	// setup unit garrison
+	private _garrison = SE_NATO_GarrLevelOne;
+
+	if (_worth > 1000) then
 	{
-		sleep 5;
-
-		{
-			_x params["_pos", "_name", "_worth"];
-
-			// vic spawn works like this:
-			// find markup with nearObjects/nearestTerrainObjects, process that with switch
-			// delete and replace placeholder vics with actual vics for this base 
-			// vics for each garrison will depend on the worth, which influences the random range of vics in the base
-			// randomly select vics (also based on worth, higher worth = better vics) and place them in the garrison
-			if ([_pos] call SE_fnc_inSpawnDistance) then
-			{
-				if (count (spawners getVariable [format["nato_%1", _name], []]) == 0) then
-				{
-					[_pos, _name, _worth] call SE_fnc_natoMilBaseSpawner;
-				};
-			} else
-			{
-				private _groupEntry = (spawners getVariable [format["group_%1", _name], []]);
-				private _spawned = (spawners getVariable [format["nato_%1", _name], []]);
-
-				if (typeName _groupEntry == "GROUP") then
-				{
-					if (count units _groupEntry != 0) then
-					{
-						private _garr = [];
-						private _vicGarrison = [];
-
-						{
-							_garr pushBack (typeOf _x);
-							deleteVehicle _x;
-						} foreach(units _groupEntry);
-
-						{
-							if (alive _x && !(_x isKindOf "Man")) then
-							{
-								_vicGarrison pushBack (typeOf _x);
-							};
-
-							deleteVehicle _x;
-						} foreach(_spawned);
-
-						spawners setVariable [format["group_%1", _name], nil, false];
-						spawners setVariable [format["garrison_%1", _name], _garr, true];
-						spawners setVariable [format["veh_%1", _name], _vicGarrison, true];
-						spawners setVariable [format["nato_%1", _name], [], true];
-					} else
-					{
-						spawners setVariable [format["group_%1", _name], nil, false];
-						spawners setVariable [format["garrison_%1", _name], [], true];
-					};
-				}
-			};
-
-			if !(_x in (server getVariable ["SE_knownBases", []])) then
-			{
-				if (_pos distance position player <= 1000) then
-				{
-					[_x] call SE_fnc_findBase;
-				};
-			};
-		} foreach(SE_baseData);
-
-		{
-			_x params["_pos", "_name"];
-			if ([_pos] call SE_fnc_inSpawnDistance) then
-			{
-				if (count (townData getVariable [format["spawner_%1", _name], []]) == 0) then
-				{
-					[_pos, _name] call SE_fnc_gendarmPatrolSpawner;
-					[_name, _pos, 6] call SE_fnc_ambientVicSpawner;
-				};
-			} else
-			{
-				private _groupEntry = (townData getVariable [format["group_%1", _name], []]);
-
-				if (typeName _groupEntry == "GROUP") then
-				{
-					if (count units _groupEntry != 0) then
-					{
-						private _garr = [];
-						private _spawner = townData getVariable [format["spawner_%1", _name], []];
-
-						{
-							_garr pushBack (typeOf _x);
-						} foreach(units _groupEntry);
-
-						{
-							deleteVehicle _x;
-						} foreach(_spawner);
-
-						townData setVariable [format["group_%1", _name], nil, false];
-						townData setVariable [format["garrison_%1", _name], _garr, true];
-						townData setVariable [format["spawner_%1", _name], [], true];
-					} else
-					{
-						townData setVariable [format["group_%1", _name], nil, false];
-						townData setVariable [format["garrison_%1", _name], [], true];
-					};
-				}
-			};
-		} foreach(SE_townData);
+		_garrison = _garrison + SE_NATO_GarrLevelOne + SE_NATO_GarrLevelOne; // even more groups
 	};
-};
+
+	if (_worth <= 1000) then
+	{
+		_garrison = _garrison + SE_NATO_GarrLevelOne; // add more groups
+	};
+
+	spawners setVariable [format["garrison_%1", _name], _garrison, true];
+
+	// setup vic garrison
+	private _vicCount = 0;
+	private _vicGarrison = spawners getVariable [format["veh_%1", _name], []];
+	private _vicInit = spawners getVariable [format["veh_init_%1", _name], false];
+	
+
+	if (_worth > 1000) then
+	{
+		_vicCount = 5;
+	};
+
+	if (_worth <= 1000) then
+	{
+		_vicCount = 3;
+	};
+
+	if (_worth <= 800) then
+	{
+		_vicCount = 2;
+	};
+
+	if (_worth <= 600) then
+	{
+		_vicCount = 1;
+	};
+
+	if !(_vicInit) then
+	{
+		if (_vicCount > (count _vicSpawnSpots)) then
+		{
+			_vicCount = count _vicSpawnSpots;
+		};
+
+		for [{ _i = 0 }, { _i < _vicCount }, { _i = _i + 1 }] do
+		{
+			private _spawnSpot = _vicSpawnSpots select _i-1;
+			private _pool = [false] call SE_fnc_getAvailableVehiclePool;
+
+			private _vic = [_spawnSpot, _pool select (floor (random count _pool))];
+			_vicGarrison pushBack _vic;
+		};
+
+		spawners setVariable [format["veh_%1", _name], _vicGarrison, true];
+		spawners setVariable [format["veh_init_%1", _name], true, true];
+	};
+
+
+} foreach(SE_baseData);

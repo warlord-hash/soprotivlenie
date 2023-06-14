@@ -1,52 +1,66 @@
+class CfgSounds
+{
+    sounds[] = {};
+
+    class AirRaidSiren
+    {
+        name = "Air Raid Siren";
+        sound[] = { "sounds\air_siren.ogg", 1, 1, 2500 };
+        titles[] = { 0, "" };
+    };
+};
+
 class CfgFunctions
 {
     class SE
     {
         class Base
         {
-            file="\soprot\functions";
+            file="functions";
             class initVar {};
+            class gameLoop {};
         };
 
         class Military
         {
-            file="\soprot\functions\military";
+            file="functions\military";
             class findBase {};
         };
 
         class Map
         {
-            file="\soprot\functions\map";
+            file="functions\map";
             class updateBaseMarkers {};
+            class updateTownMarker {};
         };
 
         class NATO
         {
-            file="\soprot\functions\factions\nato";
+            file="functions\factions\nato";
             class initNato {};
         };
 
         class Gendarm
         {
-            file="\soprot\functions\factions\gendarm";
+            file="functions\factions\gendarm";
             class initGendarm {};
         };
 
         class Civ
         {
-            file="\soprot\functions\factions\civ";
+            file="functions\factions\civ";
             class initCiv {};
         };
 
         class Virtualization
         {
-            file="\soprot\functions\virtualization";
+            file="functions\virtualization";
             class inSpawnDistance {};
         };
 
         class Spawners
         {
-            file="\soprot\functions\virtualization\spawners";
+            file="functions\virtualization\spawners";
             class natoMilBaseSpawner {};
             class gendarmPatrolSpawner {};
             class jetPatrolSpawn {};
@@ -55,14 +69,15 @@ class CfgFunctions
 
         class EventHandlers
         {
-            file="\soprot\functions\eh";
+            file="functions\eh";
             class addUnitEventHandlers {};
         };
 
         class AICommander
         {
-            file="\soprot\functions\ai\commander";
+            file="functions\ai\commander";
             class getAvailableVehiclePool {};
+            class reinforceTown {};
         };
     };
 };

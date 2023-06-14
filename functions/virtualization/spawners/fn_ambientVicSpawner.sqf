@@ -1,5 +1,6 @@
 params ["_name", "_townPos", "_count"];
 
+private _spawner = townData getVariable [format["spawner_%1", _name], []];
 private _vics = [];
 private _loops = 0;
 while {((count _vics) < _count) && (_loops < 50)} do
@@ -38,4 +39,4 @@ while {((count _vics) < _count) && (_loops < 50)} do
 	};
 };
 
-townData setVariable [format["spawner_%1", _name], _vics];
+townData setVariable [format["spawner_%1", _name], (_spawner + _vics)];

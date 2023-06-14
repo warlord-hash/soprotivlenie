@@ -1,8 +1,10 @@
-// This is achieved thanks to the script provided by Overthrow in [mission].[map]\data\towns.sqf
+// this is achieved thanks to the script provided by Overthrow in [mission].[map]\data\towns.sqf
 
 SE_townData = [
 	[[3687.78,13776.1],"Aggelochori"],[[4116.11,11736.1],"Neri"],[[5033.31,11245.2],"Panochori"],[[9091.81,11961.9],"Zaros"],[[10618.9,12237.3],"Therisa"],[[11701.1,13672.1],"Katalaki"],[[12502,14337],"Neochori"],[[12950.1,15041.6],"Stavros"],[[12282,15732.3],"Lakka"],[[11112.6,14573.7],"Alikampos"],[[9187.95,15947.8],"Agios Dionysios"],[[7062.42,16472.1],"Kore"],[[4885.98,16171.3],"Negades"],[[3948.77,17277.8],"Agios Konstantinos"],[[7375.81,15429.5],"Topolia"],[[14479.8,17614.3],"Gravia"],[[13993,18709.4],"Athira"],[[14612.5,20786.7],"Frini"],[[12787,19679.3],"Ifestiona"],[[8625.13,18301.6],"Syrta"],[[10270.3,19036],"Galati"],[[11786.7,18372.4],"Koroni"],[[9425.42,20284],"Abdera"],[[16207,17296.7],"Telos"],[[16584.3,16104],"Anthrakia"],[[17826.5,18129.4],"Kalithea"],[[19339.4,17641.6],"Agios Petros"],[[20885.4,16958.8],"Paros"],[[21351.6,16361.9],"Kalochori"],[[25680.5,21365.1],"Sofia"],[[26943.9,23170.7],"Molos"],[[23199.7,19986.6],"Ioannina"],[[23908.6,20144.7],"Delfinaki"],[[19473.3,15453.7],"Nifi"],[[18049.1,15264.1],"Charkia"],[[19336.9,13252.3],"Dorida"],[[20194.6,11660.7],"Chalkeia"],[[20490.2,8907.12],"Panagia"],[[21640.7,7583.93],"Feres"],[[20769.8,6736.46],"Selakano"],[[16780.6,12604.5],"Pyrgos"],[[3458.95,12966.4],"Kavala"],[[10966.5,13435.3],"Poliakko"],[[4560.45,21460.6],"Oreokastro"],[[16668.5,20487],"Agia Triada"],[[10410.4,17243.1],"Orino"],[[17059.7,9992.32],"Ekali"],[[18753.4,16597.1],"Rodopoli"]
 ];
 
 SE_capitals = ["Kavala","Pyrgos"];
-SE_regionalCapitals = ["Kavala", "Pyrgos", "Athira", "Agios Konstantinos"];
+SE_regionalCapitals = ["Kavala", "Pyrgos", "Athira", "Sofia"];
+SE_highPopulationTowns = ["Kavala", "Pyrgos"];
+SE_midPopulationTowns = ["Aggelochori", "Athira", "Sofia", "Neochori", "Negades", "Agios Dionysios", "Charkia", "Syrta", "Agios Konstantinos", "Zaros"];
