@@ -11,6 +11,8 @@ SE_NATO_Grenadier = "B_Soldier_GL_F";
 SE_NATO_MachineGunner = "B_soldier_AR_F";
 SE_NATO_LightAT = "B_soldier_LAT_F";
 SE_NATO_SquadLead = "B_Soldier_SL_F";
+SE_NATO_Medic = "B_medic_F";
+SE_NATO_Marksman = "B_soldier_M_F";
 SE_NATO_JetPilot = "O_Pilot_F";
 
 /*
@@ -52,8 +54,10 @@ SE_NATO_FighterJet = "B_Plane_Fighter_01_F";
 *
 */
 
-SE_NATO_GarrLevelOne = [SE_NATO_SquadLead, SE_NATO_Rifleman, SE_NATO_Rifleman, SE_NATO_Grenadier, SE_NATO_MachineGunner, SE_NATO_LightAT];
-SE_NATO_GarrLevelTwo = [];
+
+// SE_NATO_GarrLevelOne = [SE_NATO_SquadLead, SE_NATO_Rifleman, SE_NATO_Rifleman, SE_NATO_Grenadier, SE_NATO_MachineGunner, SE_NATO_LightAT];
+// SE_NATO_GarrLevelTwo = [];
 
 SE_NATO_HarmlessVics = [SE_NATO_InfantryTruck, SE_NATO_FuelTruck, SE_NATO_MRAPUnarmed];
 SE_NATO_Statics = [SE_NATO_StaticHMG, SE_NATO_StaticGMG];
+SE_NATO_PossibleUnits = [SE_NATO_Rifleman, SE_NATO_Grenadier, SE_NATO_MachineGunner, SE_NATO_LightAT, SE_NATO_Medic, SE_NATO_Marksman];

@@ -119,16 +119,31 @@ MISSION_ROOT = call {
 	spawners setVariable [format["staticspots_%1", _name], _staticSpawnSpots, true];
 
 	// setup unit garrison
-	private _garrison = SE_NATO_GarrLevelOne;
-
+	private _garrison = [];
+	private _random = 0;
 	if (_worth > 1000) then
 	{
-		_garrison = _garrison + SE_NATO_GarrLevelOne + SE_NATO_GarrLevelOne; // even more groups
+		_random = random [40,50,60];
 	};
 
-	if (_worth <= 1000) then
+	if (_worth < 1000) then
 	{
-		_garrison = _garrison + SE_NATO_GarrLevelOne; // add more groups
+		_random = random [20,30,40];
+	};
+
+	if (_worth <= 500) then
+	{
+		_random = random [10,15,20];
+	};
+
+	if(_worth <= 300) then
+	{
+		_random = random [3,5,10];
+	};
+
+	for [{_i = 0}, {_i < _random}, {_i = _i + 1}] do
+	{
+		_garrison pushBack (selectRandom SE_NATO_PossibleUnits);
 	};
 
 	private _totalInf = aiCommander getVariable ["total_inf", 0];

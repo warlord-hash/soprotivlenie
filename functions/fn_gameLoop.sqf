@@ -19,6 +19,11 @@ if(!isServer) exitWith {};
 				{
 					[_pos, _name, _worth] call SE_fnc_natoMilBaseSpawner;
 				};
+
+				if !(_x in (server getVariable ["SE_knownBases", []])) then
+				{
+					[_x] call SE_fnc_findBase;
+				};
 			} else
 			{
 				private _groups = (spawners getVariable [format["group_%1", _name], []]);
@@ -26,45 +31,35 @@ if(!isServer) exitWith {};
 
 				if (count _groups > 0) then
 				{
+					private _garr = [];
+					private _vicGarrison = [];
+					
 					{
 						if (count units _x != 0) then
 						{
-							private _garr = [];
-							private _vicGarrison = [];
 
 							{
 								_garr pushBack (typeOf _x);
 								deleteVehicle _x;
 							} foreach(units _x);
-
-							{
-								if (alive _x && !(_x isKindOf "Man")) then
-								{
-									_vicGarrison pushBack [[getPos _x, getDir _x], (typeOf _x)];
-								};
-
-								deleteVehicle _x;
-							} foreach(_spawned);
-
-							spawners setVariable [format["group_%1", _name], [], false];
-							spawners setVariable [format["garrison_%1", _name], _garr, true];
-							spawners setVariable [format["veh_%1", _name], _vicGarrison, true];
-							spawners setVariable [format["nato_%1", _name], [], true];
-						} else
-						{
-							spawners setVariable [format["group_%1", _name], [], false];
-							spawners setVariable [format["garrison_%1", _name], [], true];
 						};
 					} foreach _groups;
-				}
-			};
 
-			if !(_x in (server getVariable ["SE_knownBases", []])) then
-			{
-				if (_pos distance position player <= 1000) then
-				{
-					[_x] call SE_fnc_findBase;
-				};
+					{
+						if (alive _x && !(_x isKindOf "Man")) then
+						{
+							_vicGarrison pushBack [[getPos _x, getDir _x], (typeOf _x)];
+						};
+
+						deleteVehicle _x;
+					} foreach(_spawned);
+					
+
+					spawners setVariable [format["group_%1", _name], [], false];
+					spawners setVariable [format["garrison_%1", _name], _garr, true];
+					spawners setVariable [format["veh_%1", _name], _vicGarrison, true];
+					spawners setVariable [format["nato_%1", _name], [], true];
+				}
 			};
 		} foreach(SE_baseData);
 

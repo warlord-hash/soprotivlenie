@@ -1,7 +1,7 @@
 params ["_pos", "_name", "_worth"];
 
 private _spawnerName = format["nato_%1", _name];
-private _garrison = spawners getVariable [format["garrison_%1", _name], SE_NATO_GarrLevelOne];
+private _garrison = spawners getVariable [format["garrison_%1", _name], []];
 private _staticGarrison = spawners getVariable [format["staticgarrison_%1", _name], []];
 private _vicGarrison = spawners getVariable [format["veh_%1", _name], []];
 private _vicInit = spawners getVariable [format["veh_init_%1", _name], false];
