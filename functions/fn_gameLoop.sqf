@@ -108,7 +108,6 @@ if(!isServer) exitWith {};
 					_warningMarker setMarkerType "mil_warning";
 					_warningMarker setMarkerText "Air Raid Siren";
 					_warningMarker setMarkerColor "ColorRed";
-					hint str getMarkerPos format["siren_%1", _name];
 
 					townData setVariable [format["air_raid_%1", _name], true, true];
 					townData setVariable [format["air_raid_marker_%1", _name], _warningMarker, true];
@@ -130,8 +129,6 @@ if(!isServer) exitWith {};
 				if (typeName _warningMarker != "ARRAY") then
 				{
 					deleteMarker _warningMarker;
-					hint format["deleted marker for %1", _name];
-
 					townData setVariable [format["air_raid_%1", _name], false, true];
 					townData setVariable [format["air_raid_marker_%1", _name], nil, true];
 

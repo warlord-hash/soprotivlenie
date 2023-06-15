@@ -93,6 +93,7 @@ MISSION_ROOT = call {
 	townData setVariable [format["marker_%1", _name], _marker, true];
 	townData setVariable [format["pop_%1", _name], _pop, true];
 	townData setVariable [format["garrison_%1", _name], SE_Gendarm_PatrolGroup, true];
+	townData setVariable [format["homeGarrison_%1", _name], SE_Gendarm_PatrolGroup, true];
 } foreach(SE_townData);
 
 {
@@ -127,7 +128,7 @@ MISSION_ROOT = call {
 		_random = random [40,50,60];
 	};
 
-	if (_worth < 1000) then
+	if (_worth <= 1000) then
 	{
 		_random = random [20,30,40];
 	};
@@ -151,6 +152,7 @@ MISSION_ROOT = call {
 	_totalInf = _totalInf + (count _garrison);
 
 	spawners setVariable [format["garrison_%1", _name], _garrison, true];
+	spawners setVariable [format["capacity_%1", _name], (count _garrison), true];
 	aiCommander setVariable ["total_inf", _totalInf, true];
 
 	// setup vic garrison
@@ -191,7 +193,14 @@ MISSION_ROOT = call {
 			private _spawnSpot = _vicSpawnSpots select _i-1;
 			private _pool = [false] call SE_fnc_getAvailableVehiclePool;
 
-			private _vic = [_spawnSpot, _pool select (floor (random count _pool))];
+			// first vic should always be transport
+			private _selectedNum = SE_NATO_InfantryTruck;
+			if(_i != 0) then
+			{
+				_selectedNum = _pool select (floor (random count _pool));
+			};
+
+			private _vic = [_spawnSpot, _selectedNum];
 			_vicGarrison pushBack _vic;
 		};
 
