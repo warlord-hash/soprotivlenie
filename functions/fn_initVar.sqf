@@ -92,6 +92,7 @@ MISSION_ROOT = call {
 	townData setVariable [format["flag_%1", _name], _flag];
 	townData setVariable [format["marker_%1", _name], _marker, true];
 	townData setVariable [format["pop_%1", _name], _pop, true];
+	townData setVariable [format["garrison_%1", _name], SE_Gendarm_PatrolGroup, true];
 } foreach(SE_townData);
 
 {

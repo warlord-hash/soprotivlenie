@@ -74,32 +74,27 @@ if(!isServer) exitWith {};
 				};
 			} else
 			{
-				private _groupEntry = (townData getVariable [format["group_%1", _name], []]);
+				private _groups = (townData getVariable [format["group_%1", _name], []]);
+				private _garr = [];
 
-				if (typeName _groupEntry == "GROUP") then
 				{
-					if (count units _groupEntry != 0) then
+					if (count units _x != 0) then
 					{
-						private _garr = [];
 						private _spawner = townData getVariable [format["spawner_%1", _name], []];
 
 						{
 							_garr pushBack (typeOf _x);
-						} foreach(units _groupEntry);
+						} foreach(units _x);
 
 						{
 							deleteVehicle _x;
 						} foreach(_spawner);
-
-						townData setVariable [format["group_%1", _name], nil, false];
-						townData setVariable [format["garrison_%1", _name], _garr, true];
-						townData setVariable [format["spawner_%1", _name], [], true];
-					} else
-					{
-						townData setVariable [format["group_%1", _name], nil, false];
-						townData setVariable [format["garrison_%1", _name], [], true];
 					};
-				}
+				} foreach _groups;
+
+				townData setVariable [format["group_%1", _name], [], true];
+				townData setVariable [format["garrison_%1", _name], _garr, true];
+				townData setVariable [format["spawner_%1", _name], [], true];
 			};
 
 			_nearestShells = nearestObjects [_pos, ["ShellBase","MissileBase"], 2500, true];
