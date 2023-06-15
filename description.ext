@@ -1,3 +1,6 @@
+allowFunctionsLog=1;
+allowFunctionsRecompile = 1;
+
 class CfgSounds
 {
     sounds[] = {};
@@ -12,6 +15,7 @@ class CfgSounds
 
 class CfgFunctions
 {
+    #include "JeroenArsenal\functions.hpp"
     class SE
     {
         class Base
