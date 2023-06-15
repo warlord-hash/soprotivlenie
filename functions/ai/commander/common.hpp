@@ -1,0 +1,6 @@
+#define SE_CONVOY_INF 0
+#define SE_CONVOY_AMMO 1
+#define SE_CONVOY_SUPPLIES 2
+#define SE_CONVOY_MEDICAL 3
+#define SE_OCCUPY_TOWN 4
+#define SE_OCCUPY_BASE 5
