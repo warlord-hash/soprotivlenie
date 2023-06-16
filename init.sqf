@@ -1,3 +1,9 @@
-[] call SE_fnc_initVar;
-call JN_fnc_ammo_init;
-[] call SE_fnc_gameLoop;
+#include "common.h"
+CALL_COMPILE_COMMON("OOP_Light\OOP_Light_init.sqf");
+CALL_COMPILE_COMMON("Location\Location.sqf");
+CALL_COMPILE_COMMON("World\World.sqf");
+
+world = NEW("World", []);
+publicVariable("world");
+
+CALLM(world, "initWorld", [world]);
